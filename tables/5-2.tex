@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+
+\begin{center}% used the environment to augment the vertical space
+% between the caption and the table
+\label{5-2}
+\begin{adjustbox}{max width=1.1\textwidth}
+
+\begin{tabular}[t]{|c|c|c|c|c|}
+	\hline
+	Range Proof& Range Form& Proof Size &Time Complexity& Size Complexity\\
+	\hline
+	\cite{li2017practical} &$[0,2^i-1]$& 5i& $O(n)$&$O(n)$\\
+	\hline
+	\cite{bunz2017bulletproofs} &$[0,2^i-1]$&5& $O(\log_2 n)$&$O(n)$\\
+	\hline
+	Our scheme&Arbitrary&20& $O(n)$& $O(n)$\\
+	\hline
+\end{tabular}
+
+\end{adjustbox}
+\end{center}
+\caption{Compare with \cite{li2017practical} and \cite{bunz2017bulletproofs}}
+\end{table}

@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+
+\begin{center}% used the environment to augment the vertical space
+% between the caption and the table
+\label{3-1}
+\begin{adjustbox}{max width=1.1\textwidth}
+
+\begin{tabular}{|l|}
+	\hline
+	$c=g^mh^r ~\mod~ N,~where~ r \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$c_1 = c/g^{a-1} ~ \mod ~ N$\\
+	$c_2 = g^{b+1}/c ~ \mod ~ N$\\
+	$c' = c_1^{b-m+1}h^{r'} ~ \mod ~ N, ~where~ r' \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$EL \stackrel{\$}{\longleftarrow} \textsf{EL} (b-m+1,-r,r', g,h,c_1,h)$\\
+	$c'' =c'^{\omega^2}h^{r''}~ \mod ~ N ,~where~ \omega,r'' \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$SQR_1\stackrel{\$}{\longleftarrow} \textsf{SQR}(\omega,r'',c',h)$\\ 
+	$M = \alpha^2,~where~ \alpha \stackrel{\$}{\longleftarrow}  \mathbb{Z} $\\
+	$R=\omega^2(m-a+1)(b-m+1)-M $\\
+	$r_1+r_2= \omega^2((b-m+1)r+r')+r'' ~where~ r_1, r_2 \stackrel{\$}{\longleftarrow}  \mathbb{Z} $\\
+	$c_1' =g^Mh^{r_1}~ \mod ~ N$\\
+	$c_2' =h^{r_2}~ \mod ~ N $\\
+	$SQR_2 \stackrel{\$}{\longleftarrow} \textsf{SQR}(\alpha,r_1,g, h)$ \\
+	\hline
+\end{tabular}
+
+\end{adjustbox}
+\end{center}
+\caption{The New Non-interactive ZKRP Protocol}
+\end{table}

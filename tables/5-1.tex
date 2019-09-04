@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+
+\begin{center}% used the environment to augment the vertical space
+% between the caption and the table
+\label{5-1}
+\begin{adjustbox}{max width=1.1\textwidth}
+
+\begin{tabular}[t]{|c|c|c|c|}
+	\hline
+	~&   Computation in modulo &~&~\\
+	Range Proof&exponentiations &Proof Size&Other comment\\
+	~&(i.e. $y = x^i~\mod~n$)&~&~\\
+	\hline
+	\cite{boudot2000efficient} &40& 7n& ~ \\
+	\hline
+	\cite{peng2010efficient}  &33&10n& Have certain potential \\
+	~&~&~&security vulnerability. \\
+	\hline
+	Our scheme&30&9n&  \\
+	\hline
+\end{tabular}
+
+\end{adjustbox}
+\end{center}
+\caption{Compare with \cite{boudot2000efficient} and \cite{peng2010efficient}}
+\end{table}

@@ -1,0 +1,41 @@
+\begin{table}[htbp]
+
+\begin{center}% used the environment to augment the vertical space
+% between the caption and the table
+\label{4-1}
+\begin{adjustbox}{max width=1.1\textwidth}
+
+\begin{tabular}{|p{8cm}|}
+	\hline
+	Simulator : $\mathcal{ELS}(g_1,h_1,g_2,h_2,A,B)$ \\
+	\hline
+	
+	Pick random $H,X,X_1,X_2 \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	\multicolumn{1}{|l|}{Set $C_1 = g_1^Xh_1^{X_1} A^{-H}~ \mod ~ N$ and $C_2 = g_2^Xh_2^{X_2} B^{-H}~ \mod ~ N$}\\
+	Set $H \longleftarrow  \mathcal{HO}(C_1||C_2)$\\
+	Return \quad $ELP = (H,X,X_1,X_2)$ \\
+	
+	\hline
+	
+	Oracle : $\mathcal{HO}(str)$    \\
+	\hline
+	$h' \stackrel{\$}{\longleftarrow}  \textsf{Hash}(str)$ \\
+	Return \quad $h$ \\
+	$\mathcal{HS} \longleftarrow \mathcal{HS}(str)$\\
+	\hline
+	\if0
+	Oracle : $\mathcal{FOO}((m_1,r_1),(m_2,r_2))$    \\
+	\hline
+	
+	Pick random $i \stackrel{\$}{\longleftarrow}  \{1,2\}$.\\
+	Compute $c = g^{m_i}h^{r_i} ~ \mod ~ N$ \\
+	Return \quad $c$ \\
+	$\mathcal{FOS} \longleftarrow \mathcal{FOS}(m_1,r_1,m_2,r_2)$\\
+	\hline
+	\fi
+\end{tabular}
+
+\end{adjustbox}
+\end{center}
+\caption{$\mathcal{ELS}$ simulator and $\mathcal{HO}$ oracle}
+\end{table}

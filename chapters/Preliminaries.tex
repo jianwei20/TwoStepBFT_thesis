@@ -1,0 +1,24 @@
+\chapter{系統模型}\label{se_2}
+我們在2.1節描述網路模型與系統假設並在2.2節描述本論文共識假設與論文常見符號定義
+\section{網路模型與系統假設}\label{se_2} 
+
+早在1985年Fische等人，提出了FLP不可能證明\cite{fischer1982impossibility}，該論文證明在一個完全異步的網路系統中，假使存在節點失效（即便只有一個節點失效），不存在一個可以達成共識的演算法。所以我們將系統假設為部分同步的網路延（Partially synchronous）模型。更明確地說，若$D(t)$代表一個在時間$t$傳遞訊息所會遭遇的延遲時間，則$D(t)$成長的速度不可能永遠大於$t$的成長速度。部分同步的網路延遲模型具有以下的性質:若是每個回合的長度都是上個回合長度的兩倍，則一定存在一個回合$i$，在回合$i$中前半段傳遞的訊息都能在回合$i$的後半段收到。因此，在我們設計的BFT演算法中，每個回合的長度會是前一個回合長度的兩倍。
+
+\section{共識假設與定義}\label{se_2} 
+
+我們假設$n$為共識問題中的參與共識的總節點數量(包含故障節點的數量)，$f$則為錯誤節點上限。Martin與Alvisi在Fast Byzantine Consensus該論文\cite{martin2006fast}已經證明了，如果要設計一個拜占庭容錯共識演算法，且每個回合只能執行兩個步驟，為了保證安全性，$n$必須至少大於5$f$。因此，我們假設$n$ = 5$f$ + 1。
+
+%
+下列我們定義一些共識演算法中的基本元素 
+\begin{itemize}%项目符号开始
+\item  區塊:以太坊的基本區塊包含 Header 與交易以下會以 $B$ 表示。
+\item  節點:參與共識演算法的個別節點以$u$。
+\item  高度:共識的區塊高度以 $H$ 表示，區塊鏈會從 $H$=0開始進行共識。
+\item  回合:每次共識回合則用 $R$ 表示，每回合會從 $R$=0開始進行共識。
+\item  提議：在每個回合開始時我們會從所有參與共識的節點中，選出一位Proposer進行廣播，由它提出當回合共識的區塊 $B$。我們稱Proposer其所廣播的提議為Proposal，以$P$ 表示。我們以$P(H,R,u,B)$表示此Proposal是在第 $H$ 的高度、第 $R$ 的回合、來自於Proposer $u$ 且包含一個區塊 $B$。
+\item  Vote：Vote 為一種訊息型態，在共識期間節點之間會互相廣播Vote。我們以 $Vote(H,R,u,B)$表示一張Vote，代表此 Vote 在第H的高度、在第R的回合、投給提議$P$且來自於 $u$ 節點。在演算法系統裡，Vote 會紀錄區塊 $B$ 的Hash 值而非整個區塊結構。
+
+\item  Lockset：節點會將Votes儲存於Lockset以進行將來的共識。我們以$Lockset(H,R,u)$ 表示一個 Lockset 在第 $H$的高度、在第 $R$ 的回，且所有在此 Lockset H, R的$Vote(H,R,u,B)$ $H$ = $H’$、$R$= $R’$。這裡Vote所投的區塊不一定需要相同。一個Lockset 需要包含大於4/5 $n$ 的Votes 才能成為⼀個合法的 Lockset ，且Vote 必須來自於不同節點。
+\item Timeout: Timeout定義了段一個時間長度，在演算法裡Timeout分成了接收Proposal的時間閘$TOvote$,與接收Vote的時間$TOcommit$,在我們的演算法裡$TOvote$ = $TOcommit$。 
+
+\end{itemize}

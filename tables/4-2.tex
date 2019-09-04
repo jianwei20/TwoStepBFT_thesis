@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+
+\begin{center}% used the environment to augment the vertical space
+% between the caption and the table
+\label{4-2}
+\begin{adjustbox}{max width=1.1\textwidth}
+
+\begin{tabular}{|p{8cm}ll|}
+	\hline
+	\underline{Original game :}&~&\underline{Ideal game :}\\
+	$c=g^mh^r ~\mod~ N,~where~ r \stackrel{\$}{\longleftarrow}  \mathbb{Z}$ &\framebox{chg \textbf{G\textsubscript{5}}} & $c = c_1g^{a-1}~\mod~ N $\\
+	$c_1 = c/g^{a-1} ~ \mod ~ N$&\framebox{chg \textbf{G\textsubscript{5}}} & $c_1 = g^{r_8}h^{\bar{r_8}}~\mod~ N, ~ where ~ r_8\stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$c_2 = g^{b+1}/c ~ \mod ~ N$&\framebox{chg \textbf{G\textsubscript{5}}}& $c_2 = g^{b+1}/c~\mod~ N $\\
+	$c' = c_1^{b-m+1}h^{r'} ~ \mod ~ N, ~where~ r' \stackrel{\$}{\longleftarrow}  \mathbb{Z}$&\framebox{chg \textbf{G\textsubscript{5}}}& $c' = g^{r_9}h^{\bar{r_9}} ~\mod~ N, ~ where ~ r_9\stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$EL \stackrel{\$}{\longleftarrow} \textsf{EL} (b-m+1,-r,r', g,h,c_1,h)$& \framebox{chg \textbf{G\textsubscript{1}}}&  $EL  = \mathcal{ELS}(g,h,c_1,h,c_2,c')$\\
+	$c'' =c'^{\omega^2}h^{r''}~ \mod ~ N ,~where~ \omega,r'' \stackrel{\$}{\longleftarrow}  \mathbb{Z}$&\framebox{chg \textbf{G\textsubscript{4}}} & $c'' = c_1'c_2'g^R~\mod~ N$\\
+	$SQR_1\stackrel{\$}{\longleftarrow} \textsf{SQR}(\omega,r'',c',h)$ & \framebox{chg \textbf{G\textsubscript{2.2}}}&  $F_1 = g^{r_4}h^{\bar{r_4}}~\mod~ N, ~ where ~ r_4\stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\ 
+	~&\framebox{chg \textbf{G\textsubscript{2.1}}}&$SQR_1 =\{\mathcal{ELS}(g,h,F_1,h,F_1,c''),F_1\}$\\
+	$M = \alpha^2,~where~ \alpha \stackrel{\$}{\longleftarrow}  \mathbb{Z} $&\framebox{del \textbf{G\textsubscript{2.2}}} &~\\
+	$R=\omega^2(m-a+1)(b-m+1)-M $&\framebox{chg \textbf{G\textsubscript{4}}}& $R\stackrel{\$}{\longleftarrow}  \mathbb{N}^*$\\
+	$r_1+r_2= \omega^2((b-m+1)r+r')+r'' ~where~ r_1, r_2 \stackrel{\$}{\longleftarrow}  \mathbb{Z} $&\framebox{del \textbf{G\textsubscript{4}}} &~\\
+	$c_1' =g^Mh^{r_1}~ \mod ~ N$&\framebox{chg \textbf{G\textsubscript{4}}} & $c_1' =g^{r_6}h^{\bar{r_6}}~\mod~ N,~ where ~ r_6 \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$c_2' =h^{r_2}~ \mod ~ N $ &\framebox{chg \textbf{G\textsubscript{4}}}& $c_2' =h^{r_7}~\mod~ N,~ where ~ r_7 \stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	$SQR_2 \stackrel{\$}{\longleftarrow} \textsf{SQR}(\alpha,r_1,g, h)$ &\framebox{chg \textbf{G\textsubscript{3.2}}} &$F_2 = g^{r_5}h^{\bar{r_5}}~\mod~ N, ~ where ~ r_5\stackrel{\$}{\longleftarrow}  \mathbb{Z}$\\
+	~&\framebox{chg \textbf{G\textsubscript{3.1}}}&$SQR_2 =\{\mathcal{ELS}(g,h,F_2,h,F_2,c_1'),F_2\}$\\
+	\hline
+\end{tabular}
+
+\end{adjustbox}
+\end{center}
+\caption{Game in the proof of \textbf{Theorem \ref{Th_1} }}
+\end{table}
