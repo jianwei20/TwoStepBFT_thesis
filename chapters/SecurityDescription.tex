@@ -1,33 +1,41 @@
 \chapter{共識模組與系統架構}\label{se_5}
 
 \section{共識模組}\label{se_5}
-本章節介紹我們實作拜占庭容錯共識的架構與機制。，共識模組底下包含處理訊息的 message handler、同步訊息的 synchronizer、與三個主要做共識的模組， ConsensusManager、HeightManager 與 RoundManager。共識模組間的關西如下圖。
-
+本章節介紹我們如何實作拜占庭容錯共識的架構。共識模組底下包含處理訊息的 Message Handler、同步訊息的 Synchronizer、與三個主要做共識的模組，Consensus Manager、Height Manager 與 Round Manager。共識模組間的關係如下圖。
 \input{figures/5}
+各共識模組之間相互負責不同事情。共識模組透過 go語言來進行實作，模組間參數時常共同管理（透過 go語言裡Channels來傳遞參數）。因此需要透過讀寫鎖，來控制讀寫流程，才不會造成多個模組同時讀寫情形。
+。
+
+
+
+\subsection{Consensus Manager}\label{se_5} 
+Consensus Manager主要管理節點間連線，並且紀錄參與共識時所需的各式資訊，如:私有鏈ID、各節點地址、共識Timeout等等。
+並且檢查區塊內的交易是否合法。Consensus Manager 核心技術在於定時的檢查自身狀態。如果滿足(一)廣播、(二)投票、(三)提交，任何一個狀態，則透過呼叫下層 Height Manager，進一步處理共識。同時也要將需要廣播的資訊交給 Message Handler。
+\subsection{Height Manager}\label{se_5}
+此模組主要功能是處理某一個高度的共識，透過管理一或多個 Round Manager 與其他節點溝通。(一)廣播:如果節點為該回合的Proposer且擁有前一回合票集合，呼叫下層 Round Manager 廣播新的共識提議；如果節點不是此回合的Proposer，等待新的共識提議被提出。(二)投票:呼叫Round Manager幫忙進行投票。(三)提交:確認高度是否已達成共識，如果還沒，則呼叫Round Manager進行提交共識。
+
+\subsection{Round Manager}\label{se_5}
+每個高度可能會需要一到多個回合，最終才能達成共識。因此Height Manager 可能須要建立多個 Round　Manager 來進行共識。Round　Manager 會蒐集來自 Height Manager 的訊息，經過判斷後採取對應動作。(一)廣播:對所有節點廣播共識提案、(二)投票:在一個回合裡，Round Manager只會對一個合法共識提案簽章並廣播。(三)提交:將區塊內容同步到自身資料庫，並進入下一個區塊高度。
 
 
 \subsection{Message Handler}\label{se_5} 
-Message handler 主要負責接收與廣播共識之中需要的訊息，在接收到來自其他節 點的訊息時進行判斷是否交給 ConsensusManager，或是過濾掉重複接受的訊息。 
+Message handler 主要負責接收與廣播共識之中需要的訊息，在接收到來自其他節點的訊息時，進行判斷是否交給 Consensus Manager，或是過濾掉重複接受的訊息。
+
 \subsection{Synchronizer}\label{se_5}
-Synchronizer 主要目的為同步節點之間在做共識時需要的訊息，以及同步驗證區塊 所需要的訊息。節點可能因為網路延遲或是比較晚加入共識，少了前面的訊息而無法 執行共識，必須先與其他節點同步到最新狀態，所以需要 Synchronizer 進行這動作。  
-\subsection{Consensus Manager}\label{se_5} 
-主要功能是管理 HeightManager，以及區塊鏈本身與資料庫的各種資訊。 ConsensusManager 也負責處理與其他節點交換的各種資訊，再將收到的資訊向下 交給 HeightManager 處理，同時也要將需要廣播的資訊交給 message handler。
-\subsection{Height Manager}\label{se_5}
-此模組主要功能是處理某一個高度的共識，透過管理一或多個 RoundManager 與其他節點進行共識。
-\subsection{Round Manager}\label{se_5}
-每個高度會需要一到多個回合，HeightManager 會建立一到多個 RoundManager 來進行共識。RoundManager 會蒐集來自 HeightManager 的訊息，經過判斷後開始新的共識回合。
+Synchronizer 主要目的為同步節點間訊息。因為網路間可能存在延遲，節點可能因此較晚進到共識，少了前面的訊息而無法執行共識。必須先與其他節點同步到最新狀態。  
 
 
 
 
 \section{系統架構}\label{se_5}  
-FaS-BFT共識演算法相較於過去傳統三回合的共識演算法，能在網路傳輸穩定情況下，較快達成共識。我們的目標是測試FaS-BFT在數百個節點的私有鏈的效率，實驗將在AWS雲端伺服器上進行，為了達成這個目標，我們整合了許多自動化的開發套件來協助我們完成實驗。實驗系統架構主要如下圖所描述 
+TwoStepBFT共識演算法相較於過去傳統三回合的共識演算法，能在網路傳輸穩定情況下，較快達成共識。我們的目標是測試TwoStepBFT在多個節點的私有鏈的效率，實驗將在AWS雲端伺服器上進行。為了達成這個目標，我們整合了許多自動化的開發套件來協助我們完成實驗。實驗系統架構主要如下圖所描述 
 
 \input{figures/5.1}
 
-該系統內含一個Control Tower，此台電腦類似實驗的中央控制中心，負責部署實驗環境到其他雲端機器上，並且收集其他機器所產生的實驗數據，該系統另包含數百個區塊鏈節點，這些節點運行FaS-BFT演算法來達成區塊鏈共識。自動化多節點實驗主要分為兩大步驟: (1)高效率部署雲端系統 (2)自動化搭建私有鏈
-\subsection{高效率部署雲端系統}\label{se_5} 
+該系統內含一個Control Tower，此台電腦類似實驗的中央控制中心，負責部署實驗環境到其他雲端機器上，並且收集其他機器所產生的實驗數據，該系統另包含數個區塊鏈節點，這些節點運行TwoStepBFT演算法，以達成區塊鏈共識。自動化多節點實驗主要分為兩大步驟: (1)高效率部署雲端系統 (2)自動化搭建私有鏈
 
+\subsection{高效率部署雲端系統}\label{se_5} 
+為了能夠在雲端平台上，快速開啟多台環境一致的機器，這些機器將成為區塊鏈的節點。我們整合了許多套件其中包含（一）Packer：能夠將實驗環境，打包成映像檔。這些映像黨裡會包含TwoStepBFT共識專案以及程式需要的各試工具。（二）Terraform：能夠依照使用者需求，動態產相對應的機器。
 \begin{itemize}%项目符号开始
 \item [1)] Packer: 為了能夠快速將上百個區塊鏈節點環境建立起來，因此使用了Hashicorp Packer這套工具來打包 AWS的AMI （Amazon Machine Images），AMI 能幫助我們快速建立出環境一致的節點。
 Packer的優點如下

@@ -1,8 +1,11 @@
 \chapter{相關研究}\label{se_7}
-Tendermint\cite{buchman2016tendermint} 是一種區塊鏈共識機制主要以Go語言撰寫，與PBFT 相似，每個回合都是一次廣播與兩次投票來產生共識，不同於PBFT之處在於Tendermint 引入Lock概念，藉此維護系統的safety 和liveness，在官方文件裡提及理想狀況下在64個節點能有約4000tps。
+{\bfseries POW:}
+比特幣是目前最著名的區塊鏈應用，使用pow作為比特幣的共識系統。在該系統裡節點需要花費時間與電腦運算資源，並嘗試解出一組數學公式的答案，用來獲得廣播區塊的權力。該答案也稱之為nonce。將nonce值附於區塊內，其他節點就能透過簡單數學公式驗證該答案是否有效。除非能控制超過51\%以上的節點，才能進行攻擊。使得pow成為非常安全共識演算法。在私有鏈上因為參與共識的節點較少，因此系統內計算能力總和是非常小的。攻擊者可以輕易地以較高的計算能力，就能推翻過去的共識結果。因此私有鏈不傾向選擇使用POW。
+著名的以太坊也使用POW作為共識機制，以太坊除了能夠儲存交易外，還能執行程式碼，運行智能合約，幫助我們執行任務。
 
-SBFT\cite{gueta2018sbft}是一個兩步驟的共識演算法，一樣至少需要5f+1個節點(f是最大能容忍錯誤節點數量)，SBFT在一般情況下只需要兩個步驟即能達成共識，但在有拜占庭攻擊時，需要運行額外的步驟，來達成共識，在100個節點情況下擁有50tps
 
-MSIG-BFT是一個三步驟的共識演算法，透過收集$f$+1個數位簽章來確保共識提議唯一性，讓共識演算法保證安全性及唯一性,MSIG-BFT時坐在go-ethereum上,在小節點數時(4個節點)約能有1000TPS。
+{\bfseries BFT(三步驟):}
+BFT是拜占庭容錯（Byzantine Fault-Tolerant）的縮寫。在拜占庭容錯的區塊鏈上，即使系統中部分節點當機或存在惡意節點情況下，區塊鏈依舊具備安全性（Safety）與活性（Liveness）等性質。一般來說，一個回合需要執行三個步驟。第一個步驟為播其提議。第二個步驟透過交互投票，檢查該提議者是否只有廣播一份提議。在第三個步驟中，節點便可以開始投票，若一個節點蒐集到足夠多的同意票，便可以確認共識結果。知名的BFT演算法PBFT\cite{castro1999practical}便是根據上述三個步驟設計。而許多私有鏈區外鏈系統，都是根據上述想法而延伸出來。例如:Tendermint[3] 是一種區塊鏈共識機制主要以 Go 語言撰寫，與 PBFT 相似，每個回合都是一次廣播與兩次投票來產生共識，不同於 PBFT 之處在於Tendermint 引入 Lock 概念，藉此維護系統的 Safety 和 Liveness，在官方文件裡提及理想狀況下在 64 個節點能有約 4000 TPS。MSIG­BFT 是一個三步驟的共識演算法，透過收集 f +1 個數位簽章來確保共識提議唯一性，讓共識演算法保證安全性及唯一性,MSIG­BFT 實做在 go­ethereumg上。LibraBFT\cite{STEVE_HANNA2010} 是 Libra 區塊鏈系統所使用的共識系統，在 LibraBFT 技術白皮書提到選擇 Hotstuff\cite{yin2018hotstuff} 作為 LibraBFT 的基礎。Hotstuff 採用了聚集簽名，讓系統內的訊息傳輸量從 $n(n^2)$ 變成 $n(n)$，在 libra 白皮數理提到在理想狀況下 100 個節點能有約 1000tps
 
-LibraBFT\cite{STEVE_HANNA2010}是Libra區塊鏈系統所使用的共識系統，在LibraBFT技術白皮書提到選擇 Hotstuff\cite{yin2018hotstuff} 作為 LibraBFT 的基礎。Hotstuff採用了聚集簽名，讓系統內的訊息傳輸量從$n$($n^2$) 變成 $n$($n$)，在libra白皮數理提到在理想狀況下100個節點能有約1000tps
+{\bfseries BFT(兩步驟):}過去也有少部分的BFT演算法在一個回合中只需要兩個步驟，例子包含FaB\cite{abraham2018revisiting}、Zyzzyva\cite{kotla2007zyzzyva}、SBFT\cite{martin2006fast}、Hydrachain\cite{Hydrachain}。然而，FaB與Zyzzyva已被指出無法保證活性，換句話說，共識演算法可能永遠無法達成共識。另一方面，Hydrachain也被指出無法保證安全性，也就是說，不同的正常節點可能會有不同的共識節果，這在區塊鏈上及代表分岔。雖然SBFT能夠保證安全性與活性，但是在有拜占庭攻擊時，會改用類似PBFT的三步驟設計。因此，在系統狀況良好時，SBFT每回合只需要執行兩個步驟。但是在系統狀況不良時，SBFT每回合仍需要執行三個步驟。在 100 個節點情況下吞吐量約50 TPS。
+
