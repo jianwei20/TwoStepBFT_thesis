@@ -5,7 +5,7 @@
 
 
 
-\If{在$TOvote$到期之前,$u$在第$r$回合收到一個合法的Proposal $p$}{
+\If{在$TOvote$到期之前，$u$在第$r$回合收到一個合法的Proposal $p$}{
   $v.B$ $\gets$ $p.B$並且將$v$廣播給所有節點
 }
 
@@ -16,18 +16,19 @@
   $v.B$ $\gets$ $\varnothing$
 }
 \Else{ 
-  $v'$ $\gets$ $u$在$r$-1回合廣播的投票vote
+  $v'$ $\gets$ $u$在$r$-1回合廣播的投票訊息
+ 
   $v.B$ $\gets$ $v'.B$
 }
     廣播$v$   
 }
-\If{在$TOcommit$到期之前,$u$在第$r$回合收到4$f$+1張vote訊息且包含一樣的 $b$且$b$ $\neq$ $\varnothing$}{
+\If{在$TOcommit$到期之前，$u$在第$r$回合收到$4f+1$張投票訊息且包含一樣的 $b$且$b$ $\neq$ $\varnothing$}{
   
  Commit $b$
 
 }
 \Else{
-進到$r$+1回合
+進到$r+1$回合
 }
   
 \end{algorithm}

@@ -6,7 +6,7 @@
 
 \section{共識假設與定義}\label{se_2} 
 
-我們假設$n$為共識問題中的參與共識的總節點數量（包含故障節點的數量），$f$則為錯誤節點上限。Martin與Alvisi在Fast Byzantine Consensus該論文\cite{martin2006fast}已經證明了，如果要設計一個拜占庭容錯共識演算法，且每個回合只能執行兩個步驟，為了保證安全性，$n$必須至少大於5$f$。因此，我們假設$n$ = 5$f$ + 1。
+我們假設$n$為共識問題中的參與共識的總節點數量（包含故障節點的數量），$f$則為錯誤節點上限。Martin與Alvisi在Fast Byzantine Consensus該論文\cite{martin2006fast}證明了，如果要設計一個拜占庭容錯共識演算法，且每個回合只能執行兩個步驟，為了確保系統共識結果一致，$n$必須至少大於5$f$。因此，我們假設$n$ = 5$f$ + 1。
 
 %
 下列我們定義一些共識演算法中的基本元素 
@@ -19,6 +19,6 @@
 \item  Vote：Vote 為一種訊息型態，在共識期間節點之間會互相廣播Vote。我們以 $v(h,r,p,u,b)$表示一張Vote，代表此 Vote 在第$h$的高度、在第$r$的回合、投給提議$p$且來自於 $u$ 節點。在演算法系統裡，Vote 會紀錄區塊 $b$ 的Hash 值而非整個區塊結構。
 
 \item  Lockset：節點會將Votes儲存於Lockset以進行將來的共識。我們以$l(h,r,u)$ 表示一個 Lockset 在第 $h$的高度、在第 $r$ 的回，來自於 $u$ 節點。且所有在此 $l(h,r,u)$裡，每一張收到的$v(h,r,p,u,b)$中，$h$與$r$都是必須相同，但這裡Vote所投的區塊卻不一定需要相同。一個Lockset 需要包含大於4/5 $n$ 的Votes才能成為一個合法的 Lockset ，且Vote 必須來自於不同節點。
-\item Timeout: Timeout定義了段一個時間長度，在演算法裡Timeout分成了接收Proposal的時間閘$TOvote$,與接收Vote的時間$TOcommit$,在我們的演算法裡$TOvote$ = $TOcommit$。 
+\item Timeout: Timeout定義了段一個時間長度，在演算法裡Timeout分成了接收Proposal的時間閘$TOvote$與接收Vote的時間閘$TOcommit$，在我們的演算法裡$TOvote$ = $TOcommit$。 
 
 \end{itemize}

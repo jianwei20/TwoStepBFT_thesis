@@ -1,7 +1,7 @@
 \begin{algorithm}
 %  \SetAlgoNoLine
   \caption{Propose:從節點$u$來觀察}
-  \KwIn{節點$u$具有初始值$bin$，以及上一回合的票集合$loclset(r-1)$}
+  \KwIn{節點$u$具有初始值$b_{in}$，以及上一回合的票集合$lockset(r-1)$}
   $ldr$ = 在$r$回合的廣播提議者
 
   \If{$u$=$ldr$}{
@@ -13,19 +13,20 @@
 
    \If{$r$=1}{
 
-   $p.B$ $\gets$ $bin$ 並且將$p$廣播給所有節點
+   $p.B$ $\gets$ $b_{in}$ 並且將$p$廣播給所有節點
 
     }
   
-  \ElseIf{$|loclset(r-1)|$ $\ge$ 4$f$+1}{
+  \ElseIf{$|lockset(r-1)|$ $\ge$ 4$f$+1}{
     
-    \If{$\exists$一個$b$，且$b$$\ne$ $\varnothing$且|{$v$|$v$ $\in$$loclset(r-1)$,$v,B$=$b$ }|$\ge$ 2$f$+1}{
-    $b$可以為任何值
+    \If{$\exists$一個$b$，且$b$$\ne$ $\varnothing$且$|\{v|v \in$$lockset(r-1)$,$v.B=b$ $\}|$$\ge$ 2$f$+1}{
+    $b$可以為任何滿足區塊限制的值
+
     $p.B$ $\gets$ $b$並且將$p$廣播給所有節點
     }
     \Else{
 
-    $p.B$ $\gets$ $bin$並且將$p$廣播給所有節點
+    $p.B$ $\gets$ $b_{in}$並且將$p$廣播給所有節點
     }
 
     }
