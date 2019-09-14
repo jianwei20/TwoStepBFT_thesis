@@ -2,11 +2,11 @@
 \section{公有鏈上共識演算法}\label{se_7}
 \subsection{Proof-of-Work}\label{se_7} 
 比特幣是目前最著名的區塊鏈應用，使用PoW（Proof-of-Work）作為比特幣的共識系統。在該系統裡節點需要花費時間與電腦運算資源，嘗試解出一組數學公式的答案，用來獲得廣播區塊的權力。該答案也稱之為Nonce。將Nonce值附於區塊內，其他節點就能透過簡單數學公式，驗證該答案是否有效。除非能控制超過51\%以上的系統運算能力，才能進行攻擊。在私有鏈上因為參與共識的節點較少，因此系統內計算能力總和非常小。攻擊者可以輕易地以較高的計算能力，推翻過去的共識結果，因此私有鏈不傾向選擇使用PoW。目前比特幣約7TPS \cite{BitcoinThroughput}
-著名的以太坊 \cite{Ethereum}、萊特幣 \cite{Litecoin}也都使用PoW作為共識機制。以太坊除了能夠儲存交易外，還能執行程式碼，運行智能合約。
+著名的以太坊 \cite{Ethereum}、萊特幣 \cite{Litecoin} 也都使用PoW作為共識機制。以太坊除了能夠儲存交易外，還能執行程式碼，運行智能合約。
 \subsection{Proof-of-Stack}\label{se_7}
 PoS（Proof-of-Stack）是把持有資產數量作為參考。資產數量越多者，越有機會擔任下個區塊的廣播者。PoS認為持有資產量高的人會越傾向維護貨幣價值，因此發動攻擊的可能性越低。不過PoS缺點也非常明顯，PoS很可能造成貨幣不流通。如果貨幣不流通，該貨幣也失去其價值。PPCoin \cite{vasin2014blackcoin}是目前少數運行PoS的區塊鏈。
 \subsection{混合型共識演算法}\label{se_7}
-混合型共識演算法概念是從公有鏈節點中，隨機挑選一群人運行拜占庭容錯共識演算法。這類的方法需要具有非常公平的抽籤演算法。Algorand \cite{gilad2017algorand}作為一個混合型共識演算法，最重要的一個機制便是引入了VRF（Verifiable Random Function），中文稱作可驗證隨機函數。透過該函數，區塊鏈上節點能夠自行驗證是否成為該回合的提議者，並且能夠提出證明供其他節點進行驗證。Algorand的處理能力超過1000TPS且延遲低於五秒。相似的混合型演算法還包含Bitcoin-NG \cite{eyal2016bitcoin}、Dexon \cite{dexon}
+混合型共識演算法概念是從公有鏈節點中，隨機挑選一群人運行拜占庭容錯共識演算法。這類的方法需要具有非常公平的抽籤演算法。Algorand \cite{gilad2017algorand}作為一個混合型共識演算法，最重要的一個機制便是引入了VRF（Verifiable Random Function），中文稱作可驗證隨機函數。透過該函數，區塊鏈上節點能夠自行驗證是否成為該回合的提議者，並且能夠提出證明供其他節點進行驗證。Algorand的處理能力超過1000TPS且延遲低於五秒。相似的混合型演算法還包含Bitcoin-NG \cite{eyal2016bitcoin}與Dexon \cite{dexon}等。
 
 
 \section{私有鏈上共識演算法}\label{se_7}

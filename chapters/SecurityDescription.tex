@@ -1,14 +1,13 @@
 \chapter{Geth共識模組程式架構與私有鏈系統部署}\label{se_5}
 在5.1將會介紹我們如何修改Geth（以太坊go語言版本）的共識模組，並且介紹共識模組彼此關係。5.2將會介紹如何將修改後的共識模組放到雲端平台上並有效率的讓這些雲端平台上的機器組成私有鏈。
 \section{Geth共識模組程式架構}\label{se_5}
-本章節介紹我們如何實作拜占庭容錯共識的架構。我們的程式架構主要參考NCCU-BFT \cite{nccubft}與MSIG-BFT。共識模組底下包含處理訊息的 Message Handler、同步訊息的 Synchronizer、與三個主要做共識的模組，Consensus Manager、Height Manager與Round Manager。共識模組間的關係如圖5.1。
-\input{figures/5}
+本章節介紹我們如何實作拜占庭容錯共識的架構。我們的程式架構主要參考NCCU-BFT \cite{nccubft}與MSIG-BFT \cite{chen2018msig}。共識模組底下包含處理訊息的 Message Handler、同步訊息的 Synchronizer、與三個主要做共識的模組，Consensus Manager、Height Manager與Round Manager。共識模組間的關係如圖5.1。
 各共識模組之間相互負責不同事情。共識模組透過go語言來進行實作，模組間參數時常共同管理（透過 go語言裡Channels來傳遞參數），因此需要透過讀寫鎖來控制讀寫流程，才不會造成多個模組同時讀寫情形。
 節點間訊息傳輸前都需透過橢圓數位簽名演算法進行簽名（ECDSA） \cite{ecdsa}，以確保訊息沒有被竄改。  
 
+\input{figures/5}
 
-
-
+\newpage
 
 \subsection{Consensus Manager}\label{se_5} 
 Consensus Manager主要管理節點間連線，並且紀錄參與共識時所需的各式資訊，如:私有鏈ID、各節點地址、共識Timeout等。
@@ -54,7 +53,7 @@ Terraform的優點如下。
 
 \subsection{私有鏈系統設定}\label{se_5} 
 此小節將會介紹如何將修改後的共識模組放到雲端平台上，並有效率的讓這些雲端平台上的機器搭建出一條私有鏈。
-為了方便的控制雲端平台上的所有機器，我們使用Ansible來管理節點間的行為。Ansible能夠定義群組，一個群組裡能夠管理多個IP，透過此方法我們能為雲端平台上的機器定義出Control Tower與Eth-nodes。有了Ansible後，我們只需要操作Control Tower就能同時控制所有Eth-nodes，不需登入個別Eth-nodes機器進行操作。Ansible的優點如下。
+為了方便的控制雲端平台上的所有機器，我們使用Ansible來管理節點間的行為。Ansible能夠定義群組，一個群組裡能夠管理多個IP，透過此方法我們能為雲端平台上的機器定義出Control Tower與Eth-nodes。有了Ansible後，我們只需要操作Control Tower就能同時控制所有Eth-nodes，不需登入所有Eth-nodes機器進行操作。Ansible的優點如下。
 \begin{itemize}%项目符号开始
 \item 輕量級套件，無需在客戶端安裝agent，更新時，只需在操作機上進行一次更新即可。
 
@@ -62,9 +61,13 @@ Terraform的優點如下。
 
 \item 使用python編寫，維護更簡單 。
 \end{itemize}
-Go-ethereum搭建私有鏈大致分為以下步驟（一）規劃私有鏈節點帳號、IP地址、節點公私鑰。（二）依照使用者需求創造出Genesis.json，節點可依照Genesis.json產生符合共識的節點。(三)整合節點資訊產生Static-node.json。下列將詳述此三個步驟。(一)透過Control Tower命令Eth-nodes產生節點帳號資訊，在我們的實驗裡是透過Ethereum Wallet api產生節點資訊（Public key、Address等等），並將產生的節點地址傳回Control Tower進行聚集。（二）
-依照使用者需求創造出Genesis.json，Genesis.json透過定義GasLimit來制定區塊大小，且Genesis.json定義鏈上節點所擁有的初始資產，由於每次實驗所產生節點帳戶地址都不相同，故我們將Genesis.json 設計成依照使用者需求動態產生，以方便實驗進行。（三）將各節點產生的節點資訊回傳給Control Tower整合出Static-node.json，並發送回給各節點，此目的是為了讓私有鏈呈現P2P網狀連線，方便讓各節點彼此連接。
+Go-ethereum搭建私有鏈大致分為以下步驟（一）創建節點帳號（二）搭建私有鏈節點（三）連接各節點，下面說明各步驟。
 
+（一）創建節點帳號:透過Control Tower命令Eth-nodes產生節點帳號資訊，在我們的實驗裡是透過Ethereum Wallet api產生節點資訊（公私鑰、節點地址等等），並將各節點產生的節點地址回傳Control Tower，待後續初始化私有鏈使用。
+
+（二）搭建私有鏈節點:依照使用者需求創造出Genesis.json。Genesis.json裡記錄了此私有鏈網路的所有初始條件。我們將Control Tower收集的節點地址寫入Genesis.json，用來分配初始節點資產。透過定義Genesis.json裡的GasLimit來制定私有鏈區塊大小。Genesis.json上還包含許多資訊，例如:私有鏈ID、挖礦難度等等。因應使用者需求，Genesis.json被設計成依照使用者需求動態產生，以方便實驗進行。Control Tower會將Genesis.json回傳給Eth-nodes，讓Eth-nodes產生符合私有鏈的節點。
+
+（三）連接各節點:將各節點產生的節點ID回傳給Control Tower整合出Static-node.json，並發送回給所有節點。節點連線時會優先訪問Static-node.json進行連線，此目的是為了讓P2P網路成為完全圖（Complete graph），讓任兩節點間皆存在P2P連線。
 
 \input{figures/6}
 
